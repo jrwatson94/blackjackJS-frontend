@@ -1,6 +1,11 @@
-console.log("HELLO")
+
 
 //fetch shuffled deck
+
+const playerHand = document.querySelector('#playerHand')
+const dealerHand = document.querySelector('#dealerHand') 
+
+
 fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 .then(resp => resp.json())
 .then(deck =>
@@ -13,15 +18,20 @@ const renderDeck = deck => {
 }
 
 const drawCards = id => {
-    fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=4`)
+    fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=2`)
     .then(r => r.json())
-    .then(cards => renderCards(cards))
+    .then(cards => renderCards(cards,"#dealerHand"))
+
+    fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=2`)
+    .then(r => r.json())
+    .then(cards => renderCards(cards,"#playerHand"))
+    .then( () => {handValue(dealerHand,playerHand)})
 }
 
-const renderCards = cards => {
-    cards.cards.forEach(card => {
-        console.log(card)
-        const cardUl = document.querySelector("#dealerHand")
+
+const renderCards = (cards,id) => {
+    cards.cards.forEach(card => {   
+        const cardUl = document.querySelector(id)
         const cardLi = document.createElement("li")
         const cardImage = document.createElement("img")
         
@@ -29,8 +39,30 @@ const renderCards = cards => {
         assignValues(card, cardImage)
 
         cardLi.append(cardImage)
-        cardUl.append(cardLi)
+        cardUl.append(cardLi)  
     })
+}
+
+
+function handValue(dealerHand, playerHand) {
+    const playerImages = playerHand.querySelectorAll('img')
+    const dealerImages = dealerHand.querySelectorAll('img')
+    let playerScore = 0
+    let dealerScore = 0
+
+
+    playerImages.forEach(img =>{
+        playerScore += parseInt(img.className)
+    })
+    dealerImages.forEach(img =>{
+        dealerScore += parseInt(img.className)
+    })
+    const playerScoreElement = document.querySelector(".player-score")
+    playerScoreElement.innerText = playerScore
+
+    const dealerScoreElement = document.querySelector(".dealer-score")
+    dealerScoreElement.innerText = dealerScore
+
 }
 
 function assignValues(card, img) {
@@ -42,3 +74,4 @@ function assignValues(card, img) {
         img.className = card.value
     }
 }
+
