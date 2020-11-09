@@ -6,11 +6,19 @@ const playerHand = document.querySelector('#playerHand')
 const dealerHand = document.querySelector('#dealerHand') 
 
 
-fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-.then(resp => resp.json())
-.then(deck =>
-    renderDeck(deck)
-)
+const startGame = () => {
+    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+    .then(resp => resp.json())
+    .then(deck =>
+    renderDeck(deck)  
+)}
+
+const startButton = document.querySelector(".start")
+startButton.addEventListener("click", event => {
+    console.log("clicked")
+    startGame()
+})
+
 
 const renderDeck = deck => {
     const id = deck.deck_id
@@ -63,7 +71,14 @@ function handValue(dealerHand, playerHand) {
     const dealerScoreElement = document.querySelector(".dealer-score")
     dealerScoreElement.innerText = dealerScore
 
+    if (playerScore > dealerScore){
+        alert("YOU WIN!")
+    }else{
+        alert("YOU LOSE!")
+    }
+
 }
+
 
 function assignValues(card, img) {
     if (card.value === "KING" || card.value === "QUEEN" || card.value === "JACK"){
