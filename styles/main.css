@@ -1,3 +1,39 @@
-body {
-    background-color: aqua;
-}
+.game-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+
+  .game-board {
+      height: 35rem;
+      background-image: url('https://thumbnails.yayimages.com/2/995/2995f4e.jpg');
+      border-radius: 2%;
+      box-shadow: 5px 10px;
+  }
+
+  .dealer-row {
+      height: 40%;
+  }
+
+  .player-row {
+      height: 40%;
+  }
+
+  .start-button-row {
+      height: 20%;
+  }
+
+  .card-img {
+      max-height: 20rem;
+      max-width: 10rem;
+      padding: 5px;
+      margin: 10px;
+
+  }
+
+  .start-button {
+      width: 10rem;
+      margin-top: 2rem;
+  }
