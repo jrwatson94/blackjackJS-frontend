@@ -46,6 +46,7 @@ form.addEventListener("submit", e => {
     renderGrid()
 })
 
+<<<<<<< HEAD
 function updateName(user){
     // playerScoreDisplay.innerText = user.name
     // playerScoreColumn.append(playerScoreDisplay)
@@ -53,6 +54,34 @@ function updateName(user){
 
 }
 
+=======
+//global variables
+const enter = document.querySelector(".enter-button")
+const gamePage = document.querySelector(".game-page")
+
+//game board elements
+const gameBoard = document.createElement("div")
+const dealerRow = document.createElement('div')
+const playerRow = document.createElement('div')
+const startButtonRow = document.createElement('div')
+
+//columns within game board
+const dealerScoreColumn = document.createElement("div")
+dealerScoreColumn.className = "col-3 align-self-center text-center"
+const dealerCardColumn = document.createElement("div")
+dealerCardColumn.className = "col-9 h-100"
+
+const playerScoreColumn = document.createElement("div")
+playerScoreColumn.className = "col-3 align-self-center text-center"
+const playerCardColumn = document.createElement("div")
+playerCardColumn.className = "col-9 h-100"
+
+//enter button
+enter.addEventListener("click", e => {
+    renderGrid()
+})
+
+>>>>>>> 7908bb95b23c21588d88c17e26433426b1f6b1df
 /* RENDER GAME BOARD TO PAGE*/
 const renderGrid = () => {
     gamePage.innerHTML = ""
@@ -122,6 +151,7 @@ const renderCards = cards => {
         alert("YOU LOSE")
     }
 }
+<<<<<<< HEAD
 
 const renderCard = card => {
     const img = document.createElement("img")
@@ -146,6 +176,34 @@ const renderDealerScore = (card1,card2) => {
     return dealerScore
 }
 
+=======
+
+const renderCard = card => {
+    const img = document.createElement("img")
+    img.className = "card-img"
+    img.src = card.image
+    return img
+}
+
+const renderPlayerScore = (card1,card2) => {
+    const playerScore = cardValue(card1) + cardValue(card2)
+    const playerScoreDisplay = document.createElement("h4")
+    playerScoreDisplay.className = "player-score-display text-light"
+    playerScoreDisplay.innerText = `Player: ${playerScore}`
+    playerScoreColumn.append(playerScoreDisplay)
+    return playerScore
+}
+
+const renderDealerScore = (card1,card2) => {
+    const dealerScore = cardValue(card1) + cardValue(card2)
+    const dealerScoreDisplay = document.createElement("h4")
+    dealerScoreDisplay.className = "dealer-score-display text-light"
+    dealerScoreDisplay.innerText = `Dealer: ${dealerScore}`
+    dealerScoreColumn.append(dealerScoreDisplay)
+    return dealerScore
+}
+
+>>>>>>> 7908bb95b23c21588d88c17e26433426b1f6b1df
 const cardValue = card => {
     if (card.value === "KING" || card.value === "QUEEN" || card.value === "JACK"){
         return 10
@@ -155,3 +213,8 @@ const cardValue = card => {
         return parseInt(card.value)
     }
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 7908bb95b23c21588d88c17e26433426b1f6b1df
