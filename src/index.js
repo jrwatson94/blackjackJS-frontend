@@ -20,8 +20,9 @@ playerScoreColumn.className = "col-3 align-self-center text-center"
 const playerCardColumn = document.createElement("div")
 playerCardColumn.className = "col-9 h-100"
 
-const playerScoreDisplay = document.createElement("h4")
+const playerScoreDisplay = document.createElement("h1")
 playerScoreDisplay.className = "player-score-display text-light"
+playerScoreDisplay.innerText= "Player:"
 
 
 //start game button
@@ -51,18 +52,9 @@ form.addEventListener("submit", e => {
             losses: 0
         })
     })
-        .then(r => r.json())
-        .then (user => {
-            renderUser(user)
-        })
+    .then(r => r.json())
     renderGrid()
 })
-
-function renderUser(user){
-    playerScoreDisplay.innerText = `${user.name}: ${playerScore}`
-    // playerScoreColumn.append(playerScoreDisplay)
-    playerScoreDisplay.id = user.id
-}
 
 /* RENDER GAME BOARD TO PAGE*/
 const renderGrid = () => {
@@ -147,16 +139,16 @@ const renderCard = card => {
 
 const renderPlayerScore = (card1,card2) => {
     playerScore = cardValue(card1) + cardValue(card2)
-    playerScoreDisplay.append(playerScore)
-
+    playerScoreDisplay.innerText = `${playerScore}`
+    playerScoreColumn.append(playerScoreDisplay)
     return playerScore
 }
 
 const renderDealerScore = (card1,card2) => {
     dealerScore = cardValue(card1) + cardValue(card2)
-    dealerScoreDisplay.className = "dealer-score-display text-light"
-    dealerScoreDisplay.innerText = `Dealer: ${dealerScore}`
-    dealerScoreColumn.append(dealerScoreDisplay)
+    // dealerScoreDisplay.className = "dealer-score-display text-light"
+    // dealerScoreDisplay.innerText = `Dealer: ${dealerScore}`
+    // dealerScoreColumn.append(dealerScoreDisplay)
     return dealerScore
 }
 
@@ -199,9 +191,6 @@ const postHand = () => {
     })
     .then(r => r.json())
     .then(hand =>{
-        console.log(hand)
-        console.log(playerScore)
-        console.log(dealerScore)
     })
 }
 
