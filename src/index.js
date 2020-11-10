@@ -172,8 +172,13 @@ const cardValue = card => {
 
 
 startButton.addEventListener("click", () => {
+    playerScore = 0
+    dealerScore = 0
+    dealerScoreColumn.innerHTML=""
+    playerScoreColumn.innerHTML =""
+    dealerCardColumn.innerHTML=""
+    playerCardColumn.innerHTML=""
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-    renderResetButton()
 })
 
 //posts details of hand to the database 
@@ -200,25 +205,7 @@ const postHand = () => {
     })
 }
 
-//a reset button will be rendered after each round of play
-const renderResetButton = () => {
-    resetButton.innerText= "Deal"
-    resetButton.className = "start-button btn-primary h-50"
-    startButtonRow.innerHTML = ""
-    startButtonRow.append(resetButton)
 
-}
-
-//event listener for reset button
-resetButton.addEventListener("click", e => {
-    playerScore = 0
-    dealerScore = 0
-    dealerScoreColumn.innerHTML=""
-    playerScoreColumn.innerHTML =""
-    dealerCardColumn.innerHTML=""
-    playerCardColumn.innerHTML=""
-    fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-})
 
 
 
