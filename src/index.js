@@ -26,6 +26,8 @@ playerScoreDisplay.className = "player-score-display text-light"
 
 //start game button
 const startButton = document.createElement("button")
+const resetButton = document.createElement("button")
+resetButton.className = "reset"
 
 //initial player score
 let playerScore = 0
@@ -58,9 +60,8 @@ form.addEventListener("submit", e => {
 
 function renderUser(user){
     playerScoreDisplay.innerText = `${user.name}: ${playerScore}`
-    playerScoreColumn.append(playerScoreDisplay)
+    // playerScoreColumn.append(playerScoreDisplay)
     playerScoreDisplay.id = user.id
-    console.log(user)
 }
 
 /* RENDER GAME BOARD TO PAGE*/
@@ -94,10 +95,14 @@ const createGameBoard = () => {
 const fetchDeck = url => {
     fetch(url)
     .then(resp => resp.json())
-    .then(deck =>
-    drawCards(deck),
-    postHand() 
-)}
+    .then(deck => {
+        drawCards(deck)
+    })
+    .then(() => {
+        // postHand()
+        console.log(dealerScore)
+    })
+}
 
 
 //fetch 4 random cards from deck
@@ -130,6 +135,7 @@ const renderCards = cards => {
         console.log("YOU LOSE")
         userWinStatus = false
     }
+    postHand()
 }
 
 const renderCard = card => {
@@ -167,9 +173,11 @@ const cardValue = card => {
 
 startButton.addEventListener("click", () => {
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+    renderResetButton()
 })
 
-postHand = () => {
+//posts details of hand to the database 
+const postHand = () => {
     const data = {
         user_id: playerScoreDisplay.id,
         user_score: playerScore,
@@ -187,6 +195,31 @@ postHand = () => {
     .then(r => r.json())
     .then(hand =>{
         console.log(hand)
+        console.log(playerScore)
+        console.log(dealerScore)
     })
 }
+
+//a reset button will be rendered after each round of play
+const renderResetButton = () => {
+    resetButton.innerText= "Deal"
+    resetButton.className = "start-button btn-primary h-50"
+    startButtonRow.innerHTML = ""
+    startButtonRow.append(resetButton)
+
+}
+
+//event listener for reset button
+resetButton.addEventListener("click", e => {
+    playerScore = 0
+    dealerScore = 0
+    dealerScoreColumn.innerHTML=""
+    playerScoreColumn.innerHTML =""
+    dealerCardColumn.innerHTML=""
+    playerCardColumn.innerHTML=""
+    fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+})
+
+
+
 
