@@ -130,7 +130,7 @@ const createGameBoard = () => {
     stayButton.className = "start-button btn-primary h-50"
     stayButton.id = "stayButton"
     stayButton.innerText = "Stay"
-    
+
     startButtonRow.append(startButton,hitButton,stayButton)
     
     gameBoard.className = "game-board container border border-dark"
@@ -213,6 +213,31 @@ const cardValue = card => {
     }
 }
 
+//posts details of hand to the database 
+const postHand = () => {
+    const data = {
+        user_id: parseInt(nameTag.id),
+        user_score: playerScore,
+        dealer_score: dealerScore,
+        user_won: userWinStatus
+    }
+    
+    fetch('http://localhost:3000/hands', {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(hand => {
+        console.log(hand)
+    })
+}
+
+
+
+/*   BUTTON EVENT HANDLERS */
 hitButton.addEventListener("click", e => {
     //find a way to find how to access the player row
     const playerCards = document.querySelector('.player-row.col-9')
@@ -252,27 +277,6 @@ startButton.addEventListener("click", () => {
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
 
-//posts details of hand to the database 
-const postHand = () => {
-    const data = {
-        user_id: parseInt(nameTag.id),
-        user_score: playerScore,
-        dealer_score: dealerScore,
-        user_won: userWinStatus
-    }
-    
-    fetch('http://localhost:3000/hands', {
-        method: "POST",
-        headers: {
-            "Content-Type":"application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(r => r.json())
-    .then(hand => {
-        console.log(hand)
-    })
-}
 
 
 
