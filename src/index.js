@@ -22,12 +22,15 @@ playerScoreColumn.className = "col-3 align-self-center text-center"
 const playerCardColumn = document.createElement("div")
 playerCardColumn.className = "col-9 h-100"
 
-const playerScoreDisplay = document.createElement("h4")
+const playerScoreDisplay = document.createElement("h1")
 playerScoreDisplay.className = "player-score-display text-light"
+playerScoreDisplay.innerText= "Player:"
 
 
 //start game button
 const startButton = document.createElement("button")
+const resetButton = document.createElement("button")
+resetButton.className = "reset"
 
 //hit button
 const hitButton = document.createElement('button')
@@ -57,19 +60,9 @@ form.addEventListener("submit", e => {
             losses: 0
         })
     })
-        .then(r => r.json())
-        .then (user => {
-            renderUser(user)
-        })
+    .then(r => r.json())
     renderGrid()
 })
-
-function renderUser(user){
-    playerScoreDisplay.innerText = `${user.name}: ${playerScore}`
-    playerScoreColumn.append(playerScoreDisplay)
-    playerScoreDisplay.id = user.id
-    console.log(user)
-}
 
 /* RENDER GAME BOARD TO PAGE*/
 const renderGrid = () => {
@@ -115,10 +108,14 @@ const createGameBoard = () => {
 const fetchDeck = url => {
     fetch(url)
     .then(resp => resp.json())
-    .then(deck =>
-    drawCards(deck),
-    postHand() 
-)}
+    .then(deck => {
+        drawCards(deck)
+    })
+    .then(() => {
+        // postHand()
+        console.log(dealerScore)
+    })
+}
 
 
 //fetch 4 random cards from deck
@@ -151,6 +148,7 @@ const renderCards = cards => {
         console.log("YOU LOSE")
         userWinStatus = false
     }
+    postHand()
 }
 
 const renderCard = card => {
@@ -162,16 +160,16 @@ const renderCard = card => {
 
 const renderPlayerScore = (card1,card2) => {
     playerScore = cardValue(card1) + cardValue(card2)
-    playerScoreDisplay.append(playerScore)
-
+    playerScoreDisplay.innerText = `${playerScore}`
+    playerScoreColumn.append(playerScoreDisplay)
     return playerScore
 }
 
 const renderDealerScore = (card1,card2) => {
     dealerScore = cardValue(card1) + cardValue(card2)
-    dealerScoreDisplay.className = "dealer-score-display text-light"
-    dealerScoreDisplay.innerText = `Dealer: ${dealerScore}`
-    dealerScoreColumn.append(dealerScoreDisplay)
+    // dealerScoreDisplay.className = "dealer-score-display text-light"
+    // dealerScoreDisplay.innerText = `Dealer: ${dealerScore}`
+    // dealerScoreColumn.append(dealerScoreDisplay)
     return dealerScore
 }
 
@@ -187,10 +185,17 @@ const cardValue = card => {
 
 
 startButton.addEventListener("click", () => {
+    playerScore = 0
+    dealerScore = 0
+    dealerScoreColumn.innerHTML=""
+    playerScoreColumn.innerHTML =""
+    dealerCardColumn.innerHTML=""
+    playerCardColumn.innerHTML=""
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
 
-postHand = () => {
+//posts details of hand to the database 
+const postHand = () => {
     const data = {
         user_id: playerScoreDisplay.id,
         user_score: playerScore,
@@ -207,7 +212,11 @@ postHand = () => {
     })
     .then(r => r.json())
     .then(hand =>{
-        console.log(hand)
     })
 }
+
+
+
+
+
 
