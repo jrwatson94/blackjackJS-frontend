@@ -89,7 +89,14 @@ h1 {
 }
 
 .added-card {
-    margin-left: -7rem;
+    position: relative;
+    max-height: 20rem;
+    max-width: 10rem;
+    padding: 5px;
+    bottom: 700px;
+    animation-name: cardSlide;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
 }
 .hitbutton {
     width: 10rem;
@@ -100,4 +107,12 @@ h1 {
 .staybutton {
     width: 10rem;
     margin-top: 2rem;
+}
+
+.lose-msg {
+    color: red;
+}
+
+.win-msg {
+    color: blanchedalmond;
 }

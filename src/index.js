@@ -314,13 +314,21 @@ const postHand = () => {
 }
 
 const winLose = () => {
-    if (playerScore < dealerScore && dealerScore < 21 || playerScore > 21){
-        alert("You Lose")
+    if (playerScore <= dealerScore && dealerScore < 21 || playerScore > 21){
+        const loseMessage = document.createElement("h2")
+        loseMessage.innerText = "You Lose"
+        loseMessage.className = "lose-msg"
+
+        document.querySelector(".col-3").append(loseMessage)
         userWinStatus = false
         hitButton.disabled = true
         stayButton.disabled = true
     }else {
-        alert("You Win")
+        const winMessage = document.createElement("h2")
+        winMessage.innerText = "You Win!"
+        winMessage.className = "win-msg"
+        console.log(winMessage)
+        document.querySelector(".col-3").append(winMessage)
         userWinStatus = true
         hitButton.disabled = true
         stayButton.disabled = true
@@ -343,7 +351,10 @@ hitButton.addEventListener("click", e => {
         playerScore += cardValue(cards.cards[0])
         playerScoreDisplay.innerText = `${playerScore}`
         console.log(playerScore)
-    winLose()
+        if (playerScore > 21 ){
+            winLose()
+        }
+            
     })
 
 })
@@ -352,16 +363,9 @@ stayButton.addEventListener("click", e => {
     console.log(dealerCardColumn)
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(r => r.json())
-    .then(cards => {
-        console.log(cards.cards[0])
-        if (dealerScore < 17){
-            dealerCardColumn.append(renderNewCard(cards.cards[0]))
-            dealerScore += cardValue(cards.cards[0])
-            dealerScoreDisplay.innerText = `${dealerScore}`
-            console.log(dealerScore)
-            winLose()
-        }
-
+    .then(card => {
+        console.log(card.cards[0])
+        dealerHit(card.cards[0])
     })
     //access the dealer side
     //activate the {dealer moves} function
@@ -372,6 +376,15 @@ stayButton.addEventListener("click", e => {
     
     console.log("stay")
 })
+const dealerHit = cardObj => {
+    while (dealerScore <= 17){
+        dealerCardColumn.append(renderNewCard(cardObj))
+        dealerScore += cardValue(cardObj)
+        dealerScoreDisplay.innerText = `${dealerScore}`
+        console.log(dealerScore)
+    }
+    winLose()
+}
 
 startButton.addEventListener("click", () => {
     stayButton.disabled = false
