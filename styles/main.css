@@ -82,7 +82,10 @@
     animation-duration: 0.3s;
     animation-delay: 1.5s;
 }
-      
+
+.added-card {
+    margin-left: -7rem;
+}
 .hitbutton {
     width: 10rem;
     margin-top: 2rem;

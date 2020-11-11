@@ -138,12 +138,14 @@ const createGameBoard = () => {
 
     gamePage.append(gameBoard)
 }
+let deckId = ""
 
 //fetch shuffled deck from deckofcards API (deckofcardsapi.com)
 const fetchDeck = url => {
     fetch(url)
     .then(resp => resp.json())
     .then(deck => {
+        deckId = deck.deck_id
         drawCards(deck)
     })
 }
@@ -151,8 +153,8 @@ const fetchDeck = url => {
 //fetch 4 random cards from deck
 //and assign them to user and dealer
 const drawCards= deck => {
-    const id = deck.deck_id
-    fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=4`)
+    // const id = deck.deck_id
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
     .then(r => r.json())
     .then(cards => {
         renderCards(cards)
@@ -168,15 +170,6 @@ const renderCards = cards => {
     const playerScoreNum = renderPlayerScore(cards.cards[2],cards.cards[3])
     const dealerScoreNum = renderDealerScore(cards.cards[0],cards.cards[1])
     
-
-    //win condition
-    if (playerScoreNum > dealerScoreNum){
-        console.log("YOU WIN")
-        userWinStatus = true
-    }else {
-        console.log("YOU LOSE")
-        userWinStatus = false
-    }
     postHand()
 }
 
@@ -185,6 +178,13 @@ const renderCard = (card,id) => {
     img.className = "card-img"
     img.src = card.image
     img.id = id
+    return img
+}
+
+const renderNewCard = card => {
+    const img = document.createElement("img")
+    img.className = "added-card"
+    img.src = card.image
     return img
 }
 
@@ -235,28 +235,55 @@ const postHand = () => {
     })
 }
 
+const winLose = () => {
+    if (playerScore < dealerScore||playerScore > 21){
+        alert("You Lose")
+        userWinStatus = false
+        hitButton.disabled = true
+        stayButton.disabled = true
+    }else {
+        alert("You Win")
+        userWinStatus = true
+        hitButton.disabled = true
+        stayButton.disabled = true
+    }
+}
+
 
 
 /*   BUTTON EVENT HANDLERS */
 hitButton.addEventListener("click", e => {
     //find a way to find how to access the player row
-    const playerCards = document.querySelector('.player-row.col-9')
-    console.log(playerCards)
+    console.log(playerCardColumn)
     //find out how to get the deck id in here
-    fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=1`)
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(r => r.json())
     .then(cards => {
-        console.log(cards)
+        console.log(cards.cards[0])
+        playerCardColumn.append(renderNewCard(cards.cards[0]))
+        playerScore += cardValue(cards.cards[0])
+        playerScoreDisplay.innerText = `${playerScore}`
+        console.log(playerScore)
+    winLose()
     })
-    //assign the card's elements to consts
-    //create img element
-    //assign a class or id
-    //append to playerCards
-    //if over 21 function
 
 })
 
 stayButton.addEventListener("click", e => {
+    console.log(dealerCardColumn)
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+    .then(r => r.json())
+    .then(cards => {
+        console.log(cards.cards[0])
+        if (dealerScore < 17){
+            dealerCardColumn.append(renderNewCard(cards.cards[0]))
+            dealerScore += cardValue(cards.cards[0])
+            dealerScoreDisplay.innerText = `${dealerScore}`
+            console.log(dealerScore)
+            winLose()
+        }
+
+    })
     //access the dealer side
     //activate the {dealer moves} function
     //activate {declare winner} function
@@ -268,6 +295,8 @@ stayButton.addEventListener("click", e => {
 })
 
 startButton.addEventListener("click", () => {
+    stayButton.disabled = false
+    hitButton.disabled = false
     playerScore = 0
     dealerScore = 0
     dealerScoreColumn.innerHTML=""
@@ -276,11 +305,6 @@ startButton.addEventListener("click", () => {
     playerCardColumn.innerHTML=""
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
-
-
-
-
-
 
 
 
