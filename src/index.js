@@ -88,7 +88,7 @@ const createGameBoard = () => {
 
     startButtonRow.className = "start-button-row row justify-content-center"
     hitButton.className = "start-button btn-primary h-50"
-    hitButton.id = hitButton
+    hitButton.id = "hitButton"
     hitButton.innerText = "Hit"
     startButtonRow.append(hitButton)
 
@@ -183,6 +183,32 @@ const cardValue = card => {
     }
 }
 
+hitButton.addEventListener("click", e => {
+    //find a way to find how to access the player row
+    const playerCards = document.querySelector('.player-row.col-9')
+    console.log(playerCards)
+    //find out how to get the deck id in here
+    fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=1`)
+    .then(r => r.json())
+    .then(cards => {
+        console.log(cards)
+    })
+    //assign the card's elements to consts
+    //create img element
+    //assign a class or id
+    //append to playerCards
+
+})
+
+stayButton.addEventListener("click", e => {
+    //access the dealer side
+    //activate the {dealer moves} function
+    //activate {declare winner} function
+    //reset function
+    
+    
+    console.log("stay")
+})
 
 startButton.addEventListener("click", () => {
     playerScore = 0
@@ -214,9 +240,3 @@ const postHand = () => {
     .then(hand =>{
     })
 }
-
-
-
-
-
-
