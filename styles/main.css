@@ -81,5 +81,15 @@
     animation-fill-mode: forwards;
     animation-duration: 0.3s;
     animation-delay: 1.5s;
+}
       
+.hitbutton {
+    width: 10rem;
+    margin-top: 2rem;
+}
+
+
+.staybutton {
+    width: 10rem;
+    margin-top: 2rem;
 }

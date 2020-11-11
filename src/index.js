@@ -15,6 +15,8 @@ const gameBoard = document.createElement("div")
 const dealerRow = document.createElement('div')
 const playerRow = document.createElement('div')
 const startButtonRow = document.createElement('div')
+const hitButtonRow = document.createElement('div')
+const stayButtonRow = document.createElement('div')
 
 //columns
 const dealerScoreColumn = document.createElement("div")
@@ -36,8 +38,16 @@ const startButton = document.createElement("button")
 const resetButton = document.createElement("button")
 resetButton.className = "reset"
 
-const nameTag = document.querySelector(".name-tag")
+//hit button
+const hitButton = document.createElement('button')
 
+//stay button
+const stayButton = document.createElement('button')
+
+//initial player score
+let playerScore = 0
+let dealerScore = 0
+let userWinStatus = false 
 
 //enter button
 form.addEventListener("submit", e => {
@@ -110,10 +120,23 @@ const createGameBoard = () => {
     playerRow.append(playerScoreColumn,playerCardColumn)
     
     //Deal button row
-    startButtonRow.className = "start-button-row row justify-content-center"
-    startButton.className = "start-button btn btn-primary h-50"
+    startButtonRow.className = "start-button-row row justify-content-left"
+    startButton.className = "start-button btn-primary h-50"
+    startButton.id = "startButton"
     startButton.innerText = "Deal"
     startButtonRow.append(startButton)
+
+    startButtonRow.className = "start-button-row row justify-content-center"
+    hitButton.className = "start-button btn-primary h-50"
+    hitButton.id = "hitButton"
+    hitButton.innerText = "Hit"
+    startButtonRow.append(hitButton)
+
+    startButtonRow.className = "start-button-row row justify-content-right"
+    stayButton.className = "start-button btn-primary h-50"
+    stayButton.id = "stayButton"
+    stayButton.innerText = "Stay"
+    startButtonRow.append(stayButton)
     
     gameBoard.className = "game-board container border border-dark"
     gameBoard.append(dealerRow,playerRow,startButtonRow)
@@ -195,6 +218,34 @@ const cardValue = card => {
     }
 }
 
+hitButton.addEventListener("click", e => {
+    //find a way to find how to access the player row
+    const playerCards = document.querySelector('.player-row.col-9')
+    console.log(playerCards)
+    //find out how to get the deck id in here
+    fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=1`)
+    .then(r => r.json())
+    .then(cards => {
+        console.log(cards)
+    })
+    //assign the card's elements to consts
+    //create img element
+    //assign a class or id
+    //append to playerCards
+    //if over 21 function
+
+})
+
+stayButton.addEventListener("click", e => {
+    //access the dealer side
+    //activate the {dealer moves} function
+    //activate {declare winner} function
+    //if over 21 function
+    //reset function
+    
+    
+    console.log("stay")
+})
 
 startButton.addEventListener("click", () => {
     playerScore = 0
