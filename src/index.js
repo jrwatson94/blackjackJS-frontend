@@ -2,13 +2,21 @@
 const form = document.querySelector("#form")
 const gamePage = document.querySelector(".game-page")
 
-//game board elements
+//initial player score
+let playerScore = 0
+let dealerScore = 0
+let userWinStatus = false 
+
+//game board container
 const gameBoard = document.createElement("div")
+
+//BOOTSTRAP GRID
+//rows
 const dealerRow = document.createElement('div')
 const playerRow = document.createElement('div')
 const startButtonRow = document.createElement('div')
 
-//columns within game board
+//columns
 const dealerScoreColumn = document.createElement("div")
 dealerScoreColumn.className = "col-3 align-self-center text-center"
 const dealerCardColumn = document.createElement("div")
@@ -22,23 +30,49 @@ playerCardColumn.className = "col-9 h-100"
 
 const playerScoreDisplay = document.createElement("h1")
 playerScoreDisplay.className = "player-score-display text-light"
-playerScoreDisplay.innerText= "Player:"
-
 
 //start game button
 const startButton = document.createElement("button")
 const resetButton = document.createElement("button")
 resetButton.className = "reset"
 
-//initial player score
-let playerScore = 0
-let dealerScore = 0
-let userWinStatus = false 
+const nameTag = document.querySelector(".name-tag")
+
 
 //enter button
 form.addEventListener("submit", e => {
     e.preventDefault()
     const username = e.target.username.value
+
+    //search database for existing users
+    findUser(username)
+    renderGrid()
+})
+
+//helper functions for fetch requests
+//GET existing user
+const findUser = (name) => {
+    fetch("http://localhost:3000/users")
+    .then(resp => resp.json())
+    .then(users => {
+        users.forEach(user => {
+            if (user.name === name) {
+                nameTag.innerText= user.name
+                nameTag.id= user.id
+            }
+        })
+
+        //if no existing user with given name,
+        //then create a new one
+        if (nameTag.innerText==""){
+            createNewUser(name)
+        }
+    })
+}
+
+
+//POST new User
+const createNewUser = name => {
     fetch("http://localhost:3000/users",{
         method:"POST",
         headers:{
@@ -46,15 +80,19 @@ form.addEventListener("submit", e => {
             'Accept':'application/json'
         },
         body: JSON.stringify({
-            name: username,
+            name: name,
             money: 500,
             wins: 0,
             losses: 0
         })
     })
     .then(r => r.json())
-    renderGrid()
-})
+    .then(user =>{
+        console.log(user.id)
+        nameTag.id = user.id
+        nameTag.innerText= user.name
+    })
+}
 
 /* RENDER GAME BOARD TO PAGE*/
 const renderGrid = () => {
@@ -73,7 +111,7 @@ const createGameBoard = () => {
     
     //Deal button row
     startButtonRow.className = "start-button-row row justify-content-center"
-    startButton.className = "start-button btn-primary h-50"
+    startButton.className = "start-button btn btn-primary h-50"
     startButton.innerText = "Deal"
     startButtonRow.append(startButton)
     
@@ -83,19 +121,14 @@ const createGameBoard = () => {
     gamePage.append(gameBoard)
 }
 
-//fetch shuffled deck
+//fetch shuffled deck from deckofcards API (deckofcardsapi.com)
 const fetchDeck = url => {
     fetch(url)
     .then(resp => resp.json())
     .then(deck => {
         drawCards(deck)
     })
-    .then(() => {
-        // postHand()
-        console.log(dealerScore)
-    })
 }
-
 
 //fetch 4 random cards from deck
 //and assign them to user and dealer
@@ -176,7 +209,7 @@ startButton.addEventListener("click", () => {
 //posts details of hand to the database 
 const postHand = () => {
     const data = {
-        user_id: playerScoreDisplay.id,
+        user_id: parseInt(nameTag.id),
         user_score: playerScore,
         dealer_score: dealerScore,
         user_won: userWinStatus
@@ -190,7 +223,8 @@ const postHand = () => {
         body: JSON.stringify(data)
     })
     .then(r => r.json())
-    .then(hand =>{
+    .then(hand => {
+        console.log(hand)
     })
 }
 
