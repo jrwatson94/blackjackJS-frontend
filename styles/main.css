@@ -29,7 +29,7 @@
       max-height: 20rem;
       max-width: 10rem;
       padding: 5px;
-      margin: 10px;
+      /* margin: 10px; */
 
   }
 
@@ -37,3 +37,49 @@
       width: 10rem;
       margin-top: 2rem;
   }
+
+@keyframes cardSlide {
+    0% {
+        bottom: 700px;
+    }
+    100% {
+        bottom: 0px;
+    }
+}
+
+
+#first-card{
+    position: relative;
+    bottom: 700px;
+    animation-name: cardSlide;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+}
+#second-card{
+    position: relative;
+    bottom: 700px;
+    animation-name: cardSlide;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+    animation-delay: 0.5s;
+}
+#third-card{
+    position: relative;
+    bottom: 700px;
+    margin-left: -7rem;
+    animation-name: cardSlide;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+    animation-delay: 1s;
+}
+
+#fourth-card{
+    position: relative;
+    bottom: 700px;
+    margin-left: -7rem;
+    animation-name: cardSlide;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+    animation-delay: 1.5s;
+      
+}

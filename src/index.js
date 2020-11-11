@@ -142,15 +142,14 @@ const drawCards= deck => {
 }
 
 const renderCards = cards => {
-    for (let i = 0; i < cards.cards.length; i++) {
-        if (i <= 1) { 
-            dealerCardColumn.append(renderCard(cards.cards[i]))
-        } else{
-            playerCardColumn.append(renderCard(cards.cards[i]))
-        }
-    }
+    dealerCardColumn.append(renderCard(cards.cards[0],"second-card"))
+    dealerCardColumn.append(renderCard(cards.cards[1],"fourth-card"))
+    playerCardColumn.append(renderCard(cards.cards[2],"first-card"))
+    playerCardColumn.append(renderCard(cards.cards[3],"third-card"))
+
     const playerScoreNum = renderPlayerScore(cards.cards[2],cards.cards[3])
     const dealerScoreNum = renderDealerScore(cards.cards[0],cards.cards[1])
+    
 
     //win condition
     if (playerScoreNum > dealerScoreNum){
@@ -163,10 +162,11 @@ const renderCards = cards => {
     postHand()
 }
 
-const renderCard = card => {
+const renderCard = (card,id) => {
     const img = document.createElement("img")
     img.className = "card-img"
     img.src = card.image
+    img.id = id
     return img
 }
 
@@ -227,6 +227,7 @@ const postHand = () => {
         console.log(hand)
     })
 }
+
 
 
 
