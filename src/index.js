@@ -33,6 +33,9 @@ playerCardColumn.className = "col-9 h-100"
 const playerScoreDisplay = document.createElement("h1")
 playerScoreDisplay.className = "player-score-display text-light"
 
+const nameTag = document.querySelector("#name-tag")
+
+
 //start game button
 const startButton = document.createElement("button")
 const resetButton = document.createElement("button")
@@ -43,11 +46,6 @@ const hitButton = document.createElement('button')
 
 //stay button
 const stayButton = document.createElement('button')
-
-//initial player score
-let playerScore = 0
-let dealerScore = 0
-let userWinStatus = false 
 
 //enter button
 form.addEventListener("submit", e => {
@@ -120,23 +118,20 @@ const createGameBoard = () => {
     playerRow.append(playerScoreColumn,playerCardColumn)
     
     //Deal button row
-    startButtonRow.className = "start-button-row row justify-content-left"
+    startButtonRow.className = "start-button-row row justify-content-center"
     startButton.className = "start-button btn-primary h-50"
     startButton.id = "startButton"
     startButton.innerText = "Deal"
-    startButtonRow.append(startButton)
 
-    startButtonRow.className = "start-button-row row justify-content-center"
     hitButton.className = "start-button btn-primary h-50"
     hitButton.id = "hitButton"
     hitButton.innerText = "Hit"
-    startButtonRow.append(hitButton)
 
-    startButtonRow.className = "start-button-row row justify-content-right"
     stayButton.className = "start-button btn-primary h-50"
     stayButton.id = "stayButton"
     stayButton.innerText = "Stay"
-    startButtonRow.append(stayButton)
+    
+    startButtonRow.append(startButton,hitButton,stayButton)
     
     gameBoard.className = "game-board container border border-dark"
     gameBoard.append(dealerRow,playerRow,startButtonRow)
