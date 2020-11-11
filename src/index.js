@@ -35,6 +35,8 @@ playerScoreDisplay.className = "player-score-display text-light"
 
 const nameTag = document.querySelector("#name-tag")
 
+//stats link
+const stats = document.querySelector(".stats")
 
 //start game button
 const startButton = document.createElement("button")
@@ -56,6 +58,74 @@ form.addEventListener("submit", e => {
     findUser(username)
     renderGrid()
 })
+
+stats.addEventListener("click", e=> {
+    gamePage.innerHTML = ""
+    renderStats()
+})
+
+const renderStats= () => {
+    fetch(`http://localhost:3000/hands`)
+    .then(r=>r.json())
+    .then(hands => {
+        renderStatsTable(hands)
+        let trueCount = 0
+        for (hand of hands){
+            if (hand.user_won == true) {
+                trueCount++
+            }
+
+        }
+        const winPercentage = trueCount/hands.length
+        renderWinPercentage(winPercentage)
+        console.log(winPercentage)
+    })
+}
+
+const renderWinPercentage = (winPercentage) => {
+    const winDisplay = document.createElement("h3")
+    winDisplay.innerText = `Win Ratio: ${winPercentage*100}%`
+    nameTag.append(winDisplay)
+}
+
+const renderStatsTable = hands => {
+    const statsTable = document.createElement("table")
+    const statsTableHeader = document.createElement("thead")
+    const statsHeaderRow = document.createElement("tr")
+    const statsTableBody = document.createElement("tbody")
+
+    const headerHand = document.createElement("th")
+    headerHand.innerText = "Hand"
+    const headerUserScore = document.createElement("th")
+    headerUserScore.innerText = "User-Score"
+    const headerDealerScore = document.createElement("th")
+    headerDealerScore.innerText = "Dealer-Score"
+    const headerWL = document.createElement("th")
+    headerWL.innerText = "W/L"
+
+    statsHeaderRow.append(headerHand,headerUserScore,headerDealerScore,headerWL)
+    statsTableHeader.append(statsHeaderRow)
+    hands.forEach(hand=> {
+        const handNumber = document.createElement("td")
+        const userScore = document.createElement("td")
+        const dealerScore = document.createElement("td")
+        const wl = document.createElement("td")
+        
+        handNumber.innerText = hand.id
+        userScore.innerText = hand.user_score
+        dealerScore.innerText = hand.dealer_score
+        wl.innerText = hand.user_won
+
+        const tableRow = document.createElement("tr")
+        tableRow.append(handNumber,userScore,dealerScore,wl)
+        statsTableBody.append(tableRow)
+    })
+    statsTable.append(statsTableHeader,statsTableBody)
+    gamePage.append(statsTable)
+}
+
+
+
 
 //helper functions for fetch requests
 //GET existing user
@@ -170,7 +240,7 @@ const renderCards = cards => {
     const playerScoreNum = renderPlayerScore(cards.cards[2],cards.cards[3])
     const dealerScoreNum = renderDealerScore(cards.cards[0],cards.cards[1])
     
-    postHand()
+    
 }
 
 const renderCard = (card,id) => {
@@ -213,6 +283,14 @@ const cardValue = card => {
     }
 }
 
+// const aceStuff = playerScore => {
+//     if (playerScore < 21){
+//         return 11
+//     }else{
+//         return 1
+//     }
+// }
+
 //posts details of hand to the database 
 const postHand = () => {
     const data = {
@@ -236,7 +314,7 @@ const postHand = () => {
 }
 
 const winLose = () => {
-    if (playerScore < dealerScore||playerScore > 21){
+    if (playerScore < dealerScore && dealerScore < 21 || playerScore > 21){
         alert("You Lose")
         userWinStatus = false
         hitButton.disabled = true
@@ -247,6 +325,7 @@ const winLose = () => {
         hitButton.disabled = true
         stayButton.disabled = true
     }
+    postHand()
 }
 
 
