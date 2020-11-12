@@ -1,6 +1,7 @@
 //global variables
 const form = document.querySelector("#form")
 const gamePage = document.querySelector(".game-page")
+let userBet = 0
 
 //initial player score
 let playerScore = 0
@@ -30,9 +31,9 @@ const playerCardColumn = document.createElement("div")
 playerCardColumn.className = "col-9 h-100"
 
 const moneyButtonsColumn = document.createElement('div')
-moneyButtonsColumn.className = "money-btn-col col-9 h-100"
+moneyButtonsColumn.className = "money-btn-col col-8 h-100 d-flex justify-content-end"
 const moneyDisplayColumn = document.createElement('div')
-moneyDisplayColumn.className = "money-display-col col-3"
+moneyDisplayColumn.className = "money-display-col col-4 d-flex justify-content-end"
 
 const playerScoreDisplay = document.createElement("h1")
 playerScoreDisplay.className = "player-score-display text-light"
@@ -41,9 +42,11 @@ const nameTag = document.querySelector("#name-tag")
 
 //money
 let currentUserMoney = 0
-const moneyDisplay = document.createElement("h2")
+const moneyDisplay = document.createElement("h4")
 moneyDisplay.className = "money-display text-light"
-const currentBetDisplay = document.createElement("h2")
+const currentBetDisplay = document.createElement("h4")
+currentBetDisplay.className = "money-display text-light"
+
 
 //stats link
 const stats = document.querySelector(".stats")
@@ -65,6 +68,7 @@ const betOne = document.createElement("button")
 const betFive = document.createElement("button")
 const betTen = document.createElement("button")
 const betTwentyFive = document.createElement("button")
+
 
 //enter button
 form.addEventListener("submit", e => {
@@ -144,13 +148,6 @@ const renderStatsTable = hands => {
     gamePage.append(statsTable)
 }
 
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> b78a07f56c52e1aa5e71bdc7797d71d2c72421c5
 //helper functions for fetch requests
 //GET existing user
 const findUser = (name) => {
@@ -161,17 +158,15 @@ const findUser = (name) => {
             if (user.name === name) {
                 nameTag.innerText= user.name
                 nameTag.id= user.id
+                currentUserMoney = user.money
+                moneyDisplay.innerText = `Money: $${currentUserMoney}`
             }
         })
-
         //if no existing user with given name,
         //then create a new one
         if (nameTag.innerText==""){
             createNewUser(name)
         }
-    })
-    .then(()=> {
-        getMoney(nameTag.id)
     })
 }
 
@@ -219,8 +214,6 @@ const createGameBoard = () => {
     //betting row
     bettingRow.className = "betting-row row justify-content-center"
 
-    
-
     //play buttons
     startButton.className = "start-button btn btn-primary h-50"
     startButton.id = "startButton"
@@ -243,6 +236,9 @@ const createGameBoard = () => {
     betTen.innerText = "$10"
     betTwentyFive.className = "money-button btn h-50"
     betTwentyFive.innerText = "$25"
+
+    //betting display
+    currentBetDisplay.innerText = "Current Bet: "
     
     moneyButtonsColumn.append(betOne,betFive,betTen,betTwentyFive)
     moneyDisplayColumn.append(moneyDisplay)
@@ -368,17 +364,21 @@ const winLose = () => {
         userWinStatus = false
         hitButton.disabled = true
         stayButton.disabled = true
+        updateMoney((currentUserMoney-userBet),nameTag.id)
     }else {
         const winMessage = document.createElement("h2")
         winMessage.innerText = "You Win!"
         winMessage.className = "win-msg"
-        console.log(winMessage)
         document.querySelector(".col-3").append(winMessage)
         userWinStatus = true
         hitButton.disabled = true
         stayButton.disabled = true
+        const userWinnings = (currentUserMoney+userBet)
+        console.log(userWinnings)
+        console.log(userBet)
+        updateMoney(userWinnings,nameTag.id)
     }
-    postHand()
+    
 }
 
 const revealDealerCard = () => {
@@ -389,24 +389,19 @@ const revealDealerCard = () => {
 
 
 /*   BUTTON EVENT HANDLERS */
+
 hitButton.addEventListener("click", e => {
     //find a way to find how to access the player row
-    console.log(playerCardColumn)
-    //find out how to get the deck id in here
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(r => r.json())
     .then(cards => {
-        console.log(cards.cards[0])
         playerCardColumn.append(renderNewCard(cards.cards[0]))
         playerScore += cardValue(cards.cards[0])
         playerScoreDisplay.innerText = `${playerScore}`
-        console.log(playerScore)
         if (playerScore > 21 ){
             winLose()
-        }
-            
+        }  
     })
-
 })
 
 stayButton.addEventListener("click", e => {
@@ -414,7 +409,6 @@ stayButton.addEventListener("click", e => {
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(r => r.json())
     .then(card => {
-        console.log(card.cards[0])
         dealerHit(card.cards[0])
     })
 })
@@ -424,7 +418,6 @@ const dealerHit = cardObj => {
         dealerCardColumn.append(renderNewCard(cardObj))
         dealerScore += cardValue(cardObj)
         hitCount++
-        console.log(dealerScore)
     }
     
     if (hitCount > 0 && dealerScore < 17){
@@ -439,7 +432,9 @@ const dealerHit = cardObj => {
     }
 }
 
+
 startButton.addEventListener("click", () => {
+    console.log(userBet)
     stayButton.disabled = false
     hitButton.disabled = false
     playerScore = 0
@@ -450,18 +445,18 @@ startButton.addEventListener("click", () => {
     playerCardColumn.innerHTML=""
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
-<<<<<<< HEAD
+
+//money button listeners
+moneyButtonsColumn.addEventListener("click", event => {
+    if (event.target.className == "money-button btn h-50"){
+        userBet = parseInt((event.target.innerText).replace('$',''))
+        console.log(currentUserMoney - userBet)
+        updateMoney((currentUserMoney - userBet),nameTag.id)
+        moneyDisplay.innerText = `Money: $${currentUserMoney-userBet}`
+    }
+})
 
 //MONEY FEATURE
-
-const getMoney = id => {
-    fetch(`http://localhost:3000/users/${id}`)
-    .then(r => r.json())
-    .then(user => {
-        currentUserMoney = user.money
-        moneyDisplay.innerText = `Money: $${currentUserMoney}`
-    })
-}
 const updateMoney = (money,id) => {
     data = {
         "money": money
@@ -473,11 +468,12 @@ const updateMoney = (money,id) => {
         },
         body: JSON.stringify(data)
     })
+    .then(()=>{
+        postHand()
+    })
 }
 
 
 
 
 
-=======
->>>>>>> b78a07f56c52e1aa5e71bdc7797d71d2c72421c5
