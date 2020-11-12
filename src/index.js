@@ -74,7 +74,6 @@ const renderStats= (id) => {
             if (hand.user_won == true) {
                 trueCount++
             }
-
         }
         const winPercentage = trueCount/hands.length
         renderWinPercentage(winPercentage)
@@ -114,7 +113,12 @@ const renderStatsTable = hands => {
         handNumber.innerText = hand.id
         userScore.innerText = hand.user_score
         dealerScore.innerText = hand.dealer_score
-        wl.innerText = hand.user_won
+        if (hand.user_won == true) {
+            wl.textContent = "won"
+        }else {
+            wl.textContent = "loss"
+        }
+        // wl.innerText = hand.user_won
 
         const tableRow = document.createElement("tr")
         tableRow.append(handNumber,userScore,dealerScore,wl)
@@ -123,6 +127,7 @@ const renderStatsTable = hands => {
     statsTable.append(statsTableHeader,statsTableBody)
     gamePage.append(statsTable)
 }
+
 
 
 
