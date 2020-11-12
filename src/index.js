@@ -8,6 +8,7 @@ let playerScore = 0
 let dealerScore = 0
 let userWinStatus = false 
 
+
 //game board container
 const gameBoard = document.createElement("div")
 
@@ -44,6 +45,7 @@ const nameTag = document.querySelector("#name-tag")
 let currentUserMoney = 0
 const moneyDisplay = document.createElement("h4")
 moneyDisplay.className = "money-display text-light"
+moneyDisplay.id = "user-money"
 const currentBetDisplay = document.createElement("h4")
 currentBetDisplay.className = "money-display text-light"
 
@@ -59,9 +61,10 @@ resetButton.className = "reset"
 
 //hit button
 const hitButton = document.createElement('button')
-
 //stay button
 const stayButton = document.createElement('button')
+hitButton.disabled = true
+stayButton.disabled = true
 
 //money buttons
 const betOne = document.createElement("button")
@@ -138,7 +141,6 @@ const renderStatsTable = hands => {
         }else {
             wl.textContent = "loss"
         }
-        // wl.innerText = hand.user_won
 
         const tableRow = document.createElement("tr")
         tableRow.append(handNumber,userScore,dealerScore,wl)
@@ -148,11 +150,8 @@ const renderStatsTable = hands => {
     gamePage.append(statsTable)
 }
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 396679dbac133285a0e70ac5ee21448b33fc7a55
 //helper functions for fetch requests
 //GET existing user
 const findUser = (name) => {
@@ -170,6 +169,7 @@ const findUser = (name) => {
         //if no existing user with given name,
         //then create a new one
         if (nameTag.innerText==""){
+            console.log("triggered")
             createNewUser(name)
         }
     })
@@ -243,10 +243,10 @@ const createGameBoard = () => {
     betTwentyFive.innerText = "$25"
 
     //betting display
-    currentBetDisplay.innerText = "Current Bet: "
+    currentBetDisplay.innerText = `Current Bet:$${userBet}`
     
     moneyButtonsColumn.append(betOne,betFive,betTen,betTwentyFive)
-    moneyDisplayColumn.append(moneyDisplay)
+    moneyDisplayColumn.append(moneyDisplay,currentBetDisplay)
     bettingRow.append(moneyButtonsColumn,moneyDisplayColumn)
 
     //Append to DOM
@@ -287,8 +287,8 @@ const renderCards = cards => {
     playerCardColumn.append(renderCard(cards.cards[2],"first-card"))
     playerCardColumn.append(renderCard(cards.cards[3],"third-card"))
 
-    const playerScoreNum = renderPlayerScore(cards.cards[2],cards.cards[3])
-    const dealerScoreNum = renderDealerScore(cards.cards[0],cards.cards[1])
+    renderPlayerScore(cards.cards[2],cards.cards[3])
+    renderDealerScore(cards.cards[0],cards.cards[1])
 }
 
 const renderCard = (card,id) => {
@@ -308,9 +308,9 @@ const renderNewCard = card => {
     const img = document.createElement("img")
     img.className = "added-card"
     img.src = card.image
-    if (card.value === "ACE"){
-        card.dataset.ace = "ace-tracker"
-    }
+    // if (card.value === "ACE"){
+    //     card.dataset.ace = "ace-tracker"
+    // }
     return img
 }
 
@@ -323,9 +323,6 @@ const renderPlayerScore = (card1,card2) => {
 
 const renderDealerScore = (card1,card2) => {
     dealerScore = cardValue(card1) + cardValue(card2)
-    // dealerScoreDisplay.className = "dealer-score-display text-light"
-    // dealerScoreDisplay.innerText = `Dealer: ${dealerScore}`
-    // dealerScoreColumn.append(dealerScoreDisplay)
     return dealerScore
 }
 
@@ -338,14 +335,6 @@ const cardValue = card => {
         return parseInt(card.value)
     }
 }
-
-// const aceStuff = score => {
-//     if (score > 21){
-//         return 1
-//     }else{
-//         return 11
-//     }
-// }
 
 //posts details of hand to the database 
 const postHand = () => {
@@ -364,8 +353,10 @@ const postHand = () => {
         body: JSON.stringify(data)
     })
     .then(r => r.json())
-    .then(hand => {
-        console.log(hand)
+    .then(()=>{
+        console.log("POSTED")
+        userBet = 0
+        currentBetDisplay.innerText = `Current Bet: $${userBet}`
     })
 }
 
@@ -380,7 +371,7 @@ const winLose = () => {
         userWinStatus = false
         hitButton.disabled = true
         stayButton.disabled = true
-        updateMoney((currentUserMoney-userBet),nameTag.id)
+
     }else {
         const winMessage = document.createElement("h2")
         winMessage.innerText = "You Win!"
@@ -389,11 +380,10 @@ const winLose = () => {
         userWinStatus = true
         hitButton.disabled = true
         stayButton.disabled = true
-        const userWinnings = (currentUserMoney+userBet)
-        console.log(userWinnings)
-        console.log(userBet)
-        updateMoney(userWinnings,nameTag.id)
+        currentUserMoney += (userBet*2)
+        moneyDisplay.innerText = `Money: $${currentUserMoney}`
     }
+    postHand()
     
 }
 
@@ -448,9 +438,7 @@ const dealerHit = cardObj => {
     }
 }
 
-
 startButton.addEventListener("click", () => {
-    console.log(userBet)
     stayButton.disabled = false
     hitButton.disabled = false
     playerScore = 0
@@ -465,23 +453,12 @@ startButton.addEventListener("click", () => {
 //money button listeners
 moneyButtonsColumn.addEventListener("click", event => {
     if (event.target.className == "money-button btn h-50"){
-        userBet = parseInt((event.target.innerText).replace('$',''))
-        console.log(currentUserMoney - userBet)
-        updateMoney((currentUserMoney - userBet),nameTag.id)
-        moneyDisplay.innerText = `Money: $${currentUserMoney-userBet}`
+        userBet += parseInt((event.target.innerText).replace('$',''))
+        currentUserMoney-=userBet
+        moneyDisplay.innerText = `Money: $${currentUserMoney}`
+        currentBetDisplay.innerText = `Current Bet: $${userBet}`
+        console.log(userBet)
     }
 })
 
-//MONEY FEATURE
-const updateMoney = (money,id) => {
-    data = {
-        "money": money
-    }
-    fetch(`http://localhost:3000/users/${id}`, {
-        method:"PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-}
+
