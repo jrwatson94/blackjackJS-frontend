@@ -1,8 +1,10 @@
 body {
     font-family: 'Berkshire Swash', cursive;
 }
-h1 {
-}
+table, th, td {
+    border: 1px solid black;
+  }
+
 .game-page {
     display: flex;
     justify-content: center;

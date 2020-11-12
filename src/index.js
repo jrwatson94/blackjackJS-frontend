@@ -61,11 +61,11 @@ form.addEventListener("submit", e => {
 
 stats.addEventListener("click", e=> {
     gamePage.innerHTML = ""
-    renderStats()
+    renderStats(nameTag.id)
 })
 
-const renderStats= () => {
-    fetch(`http://localhost:3000/hands`)
+const renderStats= (id) => {
+    fetch(`http://localhost:3000/users/${id}/hands`)
     .then(r=>r.json())
     .then(hands => {
         renderStatsTable(hands)
