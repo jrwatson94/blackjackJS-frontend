@@ -314,7 +314,7 @@ const postHand = () => {
 }
 
 const winLose = () => {
-    if (playerScore <= dealerScore && dealerScore < 21 || playerScore > 21){
+    if (playerScore <= dealerScore && dealerScore <= 21 || playerScore > 21){
         const loseMessage = document.createElement("h2")
         loseMessage.innerText = "You Lose"
         loseMessage.className = "lose-msg"
@@ -377,7 +377,7 @@ stayButton.addEventListener("click", e => {
     console.log("stay")
 })
 const dealerHit = cardObj => {
-    while (dealerScore <= 17){
+    while (dealerScore < 17){
         dealerCardColumn.append(renderNewCard(cardObj))
         dealerScore += cardValue(cardObj)
         dealerScoreDisplay.innerText = `${dealerScore}`
