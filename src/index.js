@@ -61,11 +61,11 @@ form.addEventListener("submit", e => {
 
 stats.addEventListener("click", e=> {
     gamePage.innerHTML = ""
-    renderStats()
+    renderStats(nameTag.id)
 })
 
-const renderStats= () => {
-    fetch(`http://localhost:3000/hands`)
+const renderStats= (id) => {
+    fetch(`http://localhost:3000/users/${id}/hands`)
     .then(r=>r.json())
     .then(hands => {
         renderStatsTable(hands)
@@ -314,7 +314,7 @@ const postHand = () => {
 }
 
 const winLose = () => {
-    if (playerScore <= dealerScore && dealerScore < 21 || playerScore > 21){
+    if (playerScore <= dealerScore && dealerScore <= 21 || playerScore > 21){
         const loseMessage = document.createElement("h2")
         loseMessage.innerText = "You Lose"
         loseMessage.className = "lose-msg"
@@ -377,13 +377,24 @@ stayButton.addEventListener("click", e => {
     console.log("stay")
 })
 const dealerHit = cardObj => {
-    while (dealerScore <= 17){
+    let hitCount = 0
+    if (dealerScore < 17){
         dealerCardColumn.append(renderNewCard(cardObj))
         dealerScore += cardValue(cardObj)
-        dealerScoreDisplay.innerText = `${dealerScore}`
+        hitCount++
         console.log(dealerScore)
     }
-    winLose()
+    
+    if (hitCount > 0 && dealerScore < 17){
+        fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+        .then(r => r.json())
+        .then(card => {
+            dealerHit(card.cards[0])
+        })
+    }
+    if (dealerScore >= 17){
+        winLose()
+    }
 }
 
 startButton.addEventListener("click", () => {
@@ -397,6 +408,3 @@ startButton.addEventListener("click", () => {
     playerCardColumn.innerHTML=""
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
-
-
-
