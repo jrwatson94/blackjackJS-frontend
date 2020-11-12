@@ -56,8 +56,6 @@ const stats = document.querySelector(".stats")
 /*BUTTONS*/
 //start game button
 const startButton = document.createElement("button")
-const resetButton = document.createElement("button")
-resetButton.className = "reset"
 
 //hit button
 const hitButton = document.createElement('button')
@@ -72,6 +70,14 @@ const betFive = document.createElement("button")
 const betTen = document.createElement("button")
 const betTwentyFive = document.createElement("button")
 
+//reset data button
+const resetDataButton = document.createElement("button")
+resetDataButton.className = "reset-data-button btn"
+resetDataButton.innerText = "Reset Hand History"
+
+const winDisplayDiv = document.createElement('div')
+const winDisplay = document.createElement("h3")
+
 
 //enter button
 form.addEventListener("submit", e => {
@@ -81,6 +87,8 @@ form.addEventListener("submit", e => {
     findUser(username)
     renderGrid()
 })
+
+
 
 stats.addEventListener("click", e=> {
     gamePage.innerHTML = ""
@@ -105,9 +113,9 @@ const renderStats= (id) => {
 }
 
 const renderWinPercentage = (winPercentage) => {
-    const winDisplay = document.createElement("h3")
-    winDisplay.innerText = `Win Ratio: ${winPercentage*100}%`
-    nameTag.append(winDisplay)
+    winDisplayDiv.append(winDisplay)
+    winDisplay.innerText = `Win Ratio: ${Math.round(winPercentage*100)}%`
+    nameTag.append(winDisplayDiv,resetDataButton)
 }
 
 const renderStatsTable = hands => {
@@ -392,6 +400,20 @@ const revealDealerCard = () => {
     flipCard.src = flipCard.alt
 }
 
+const resetData = id => {
+    fetch(`http://localhost:3000/users/${id}/hands`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(()=>{
+        winDisplayDiv.innerText = ""
+        gamePage.innerText = ""
+        renderStats(nameTag.id)
+    })
+}
+
 
 
 /*   BUTTON EVENT HANDLERS */
@@ -460,5 +482,11 @@ moneyButtonsColumn.addEventListener("click", event => {
         console.log(userBet)
     }
 })
+
+resetDataButton.addEventListener("click", () => {
+    resetData(nameTag.id)
+})
+
+
 
 

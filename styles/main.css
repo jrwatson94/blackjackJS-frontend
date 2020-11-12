@@ -32,7 +32,6 @@ td {
     scroll-padding-top: 200px;
     justify-content: center;
     align-items: center;
-    height: 100vh;
   }
 
 
@@ -162,6 +161,7 @@ td {
     justify-content: center;
 
 }
-.money-display-col {
-    
+.reset-data-button {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: red;
 }
