@@ -129,9 +129,6 @@ const renderStatsTable = hands => {
 }
 
 
-
-
-
 //helper functions for fetch requests
 //GET existing user
 const findUser = (name) => {
@@ -341,8 +338,6 @@ const winLose = () => {
     postHand()
 }
 
-
-
 /*   BUTTON EVENT HANDLERS */
 hitButton.addEventListener("click", e => {
     //find a way to find how to access the player row
@@ -377,7 +372,6 @@ stayButton.addEventListener("click", e => {
     //activate {declare winner} function
     //if over 21 function
     //reset function
-    
     
     console.log("stay")
 })

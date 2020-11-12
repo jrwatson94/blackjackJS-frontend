@@ -2,9 +2,10 @@ body {
     font-family: 'Berkshire Swash', cursive;
 }
 th, td {
-    padding: 5px;
+    position: relative;
+    scroll-padding-top: 50px;
     border-bottom: 1px solid #ddd;
-  }
+}
 
 .game-page {
     display: flex;
