@@ -33,8 +33,8 @@ table, th, td {
   }
 
   .card-img {
-      max-height: 20rem;
-      max-width: 10rem;
+      max-height: 17rem;
+      max-width: 9rem;
       padding: 5px;
       /* margin: 10px; */
 
@@ -54,6 +54,13 @@ table, th, td {
     }
 }
 
+.btn {
+    box-shadow: 1px 2px gray;
+}
+.btn:hover{
+    box-shadow: 3px 6px;
+}
+
 
 #first-card{
     position: relative;
@@ -63,6 +70,7 @@ table, th, td {
     animation-duration: 0.3s;
 }
 #second-card{
+    border-radius: 8%;
     position: relative;
     bottom: 700px;
     animation-name: cardSlide;
@@ -73,7 +81,7 @@ table, th, td {
 #third-card{
     position: relative;
     bottom: 700px;
-    margin-left: -7rem;
+    margin-left: -4rem;
     animation-name: cardSlide;
     animation-fill-mode: forwards;
     animation-duration: 0.3s;
@@ -83,7 +91,7 @@ table, th, td {
 #fourth-card{
     position: relative;
     bottom: 700px;
-    margin-left: -7rem;
+    margin-left: -4rem;
     animation-name: cardSlide;
     animation-fill-mode: forwards;
     animation-duration: 0.3s;
@@ -111,10 +119,28 @@ table, th, td {
     margin-top: 2rem;
 }
 
+.money-button {
+    margin: 10px;
+    border-radius: 20%;
+}
+
 .lose-msg {
     color: red;
 }
 
 .win-msg {
     color: blanchedalmond;
+}
+
+.money-display {
+    margin-left: 3rem;
+}
+.money-button-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.money-display-col {
+    
 }

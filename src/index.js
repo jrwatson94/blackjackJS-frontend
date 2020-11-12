@@ -15,8 +15,7 @@ const gameBoard = document.createElement("div")
 const dealerRow = document.createElement('div')
 const playerRow = document.createElement('div')
 const startButtonRow = document.createElement('div')
-const hitButtonRow = document.createElement('div')
-const stayButtonRow = document.createElement('div')
+const bettingRow = document.createElement('div')
 
 //columns
 const dealerScoreColumn = document.createElement("div")
@@ -30,14 +29,26 @@ playerScoreColumn.className = "col-3 align-self-center text-center"
 const playerCardColumn = document.createElement("div")
 playerCardColumn.className = "col-9 h-100"
 
+const moneyButtonsColumn = document.createElement('div')
+moneyButtonsColumn.className = "money-btn-col col-9 h-100"
+const moneyDisplayColumn = document.createElement('div')
+moneyDisplayColumn.className = "money-display-col col-3"
+
 const playerScoreDisplay = document.createElement("h1")
 playerScoreDisplay.className = "player-score-display text-light"
 
 const nameTag = document.querySelector("#name-tag")
 
+//money
+let currentUserMoney = 0
+const moneyDisplay = document.createElement("h2")
+moneyDisplay.className = "money-display text-light"
+const currentBetDisplay = document.createElement("h2")
+
 //stats link
 const stats = document.querySelector(".stats")
 
+/*BUTTONS*/
 //start game button
 const startButton = document.createElement("button")
 const resetButton = document.createElement("button")
@@ -49,11 +60,16 @@ const hitButton = document.createElement('button')
 //stay button
 const stayButton = document.createElement('button')
 
+//money buttons
+const betOne = document.createElement("button")
+const betFive = document.createElement("button")
+const betTen = document.createElement("button")
+const betTwentyFive = document.createElement("button")
+
 //enter button
 form.addEventListener("submit", e => {
     e.preventDefault()
     const username = e.target.username.value
-
     //search database for existing users
     findUser(username)
     renderGrid()
@@ -124,9 +140,6 @@ const renderStatsTable = hands => {
     gamePage.append(statsTable)
 }
 
-
-
-
 //helper functions for fetch requests
 //GET existing user
 const findUser = (name) => {
@@ -146,8 +159,10 @@ const findUser = (name) => {
             createNewUser(name)
         }
     })
+    .then(()=> {
+        getMoney(nameTag.id)
+    })
 }
-
 
 //POST new User
 const createNewUser = name => {
@@ -179,6 +194,9 @@ const renderGrid = () => {
 }
 
 const createGameBoard = () => {
+    //buttons row
+    startButtonRow.className = "start-button-row row justify-content-center"
+    
     //dealer cards row
     dealerRow.className = "dealer-row row"
     dealerRow.append(dealerScoreColumn,dealerCardColumn)
@@ -186,31 +204,51 @@ const createGameBoard = () => {
     //player card row
     playerRow.className = "player-row row"
     playerRow.append(playerScoreColumn,playerCardColumn)
+
+    //betting row
+    bettingRow.className = "betting-row row justify-content-center"
+
     
-    //Deal button row
-    startButtonRow.className = "start-button-row row justify-content-center"
-    startButton.className = "start-button btn-primary h-50"
+
+    //play buttons
+    startButton.className = "start-button btn btn-primary h-50"
     startButton.id = "startButton"
     startButton.innerText = "Deal"
 
-    hitButton.className = "start-button btn-primary h-50"
+    hitButton.className = "start-button btn btn-primary h-50"
     hitButton.id = "hitButton"
     hitButton.innerText = "Hit"
 
-    stayButton.className = "start-button btn-primary h-50"
+    stayButton.className = "start-button btn btn-primary h-50"
     stayButton.id = "stayButton"
     stayButton.innerText = "Stay"
 
+    //money buttons
+    betOne.className = "money-button btn h-50"
+    betOne.innerText = "$1"
+    betFive.className = "money-button btn h-50"
+    betFive.innerText = "$5"
+    betTen.className = "money-button btn h-50"
+    betTen.innerText = "$10"
+    betTwentyFive.className = "money-button btn h-50"
+    betTwentyFive.innerText = "$25"
+    
+    moneyButtonsColumn.append(betOne,betFive,betTen,betTwentyFive)
+    moneyDisplayColumn.append(moneyDisplay)
+    bettingRow.append(moneyButtonsColumn,moneyDisplayColumn)
+
+    //Append to DOM
     startButtonRow.append(startButton,hitButton,stayButton)
     
     gameBoard.className = "game-board container border border-dark"
-    gameBoard.append(dealerRow,playerRow,startButtonRow)
+    gameBoard.append(dealerRow,playerRow,bettingRow,startButtonRow)
 
     gamePage.append(gameBoard)
 }
-let deckId = ""
+
 
 //fetch shuffled deck from deckofcards API (deckofcardsapi.com)
+let deckId = ""
 const fetchDeck = url => {
     fetch(url)
     .then(resp => resp.json())
@@ -239,15 +277,18 @@ const renderCards = cards => {
 
     const playerScoreNum = renderPlayerScore(cards.cards[2],cards.cards[3])
     const dealerScoreNum = renderDealerScore(cards.cards[0],cards.cards[1])
-    
-    
 }
 
 const renderCard = (card,id) => {
     const img = document.createElement("img")
     img.className = "card-img"
-    img.src = card.image
     img.id = id
+    if (id==="second-card"){
+        img.src = "src/assets/card-back.jpg"
+        img.alt = card.image
+    }else {
+        img.src = card.image
+    }
     return img
 }
 
@@ -283,14 +324,6 @@ const cardValue = card => {
     }
 }
 
-// const aceStuff = playerScore => {
-//     if (playerScore < 21){
-//         return 11
-//     }else{
-//         return 1
-//     }
-// }
-
 //posts details of hand to the database 
 const postHand = () => {
     const data = {
@@ -315,6 +348,7 @@ const postHand = () => {
 
 const winLose = () => {
     if (playerScore <= dealerScore && dealerScore <= 21 || playerScore > 21){
+        revealDealerCard()
         const loseMessage = document.createElement("h2")
         loseMessage.innerText = "You Lose"
         loseMessage.className = "lose-msg"
@@ -334,6 +368,11 @@ const winLose = () => {
         stayButton.disabled = true
     }
     postHand()
+}
+
+const revealDealerCard = () => {
+    const flipCard = document.querySelector("#second-card")
+    flipCard.src = flipCard.alt
 }
 
 
@@ -360,21 +399,13 @@ hitButton.addEventListener("click", e => {
 })
 
 stayButton.addEventListener("click", e => {
-    console.log(dealerCardColumn)
+    revealDealerCard()
     fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
     .then(r => r.json())
     .then(card => {
         console.log(card.cards[0])
         dealerHit(card.cards[0])
     })
-    //access the dealer side
-    //activate the {dealer moves} function
-    //activate {declare winner} function
-    //if over 21 function
-    //reset function
-    
-    
-    console.log("stay")
 })
 const dealerHit = cardObj => {
     let hitCount = 0
@@ -408,6 +439,31 @@ startButton.addEventListener("click", () => {
     playerCardColumn.innerHTML=""
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
+
+//MONEY FEATURE
+
+const getMoney = id => {
+    fetch(`http://localhost:3000/users/${id}`)
+    .then(r => r.json())
+    .then(user => {
+        currentUserMoney = user.money
+        moneyDisplay.innerText = `Money: $${currentUserMoney}`
+    })
+}
+const updateMoney = (money,id) => {
+    data = {
+        "money": money
+    }
+    fetch(`http://localhost:3000/users/${id}`, {
+        method:"PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+}
+
+
 
 
 
