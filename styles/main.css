@@ -4,16 +4,13 @@ body {
     font-family: 'Berkshire Swash', cursive;
 }
 
-.text-center{
-    position: relative;
-    padding: 1rem;
-}
-
+/* .text-center{
+    padding: 3rem;
+} */
 th{
     padding: 3rem;
     position: relative;
 }
-
 td {
     padding-top: 3rem;
     text-align: center;
@@ -32,6 +29,10 @@ td {
     scroll-padding-top: 200px;
     justify-content: center;
     align-items: center;
+<<<<<<< HEAD
+=======
+    /* height: 100vh; */
+>>>>>>> 4def35c8c17c60fa6db30a19e647d118c1abc440
   }
 
 
@@ -161,7 +162,11 @@ td {
     justify-content: center;
 
 }
+<<<<<<< HEAD
 .reset-data-button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: red;
 }
+=======
+
+>>>>>>> 4def35c8c17c60fa6db30a19e647d118c1abc440
