@@ -155,12 +155,8 @@ td {
 .money-display {
     margin-left: 3rem;
 }
-.money-button-col {
-    display: flex;
-    align-items: center;
+.betting-row {
     justify-content: center;
 
 }
-.money-display-col {
-    
-}
+
