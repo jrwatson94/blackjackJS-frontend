@@ -377,13 +377,24 @@ stayButton.addEventListener("click", e => {
     console.log("stay")
 })
 const dealerHit = cardObj => {
-    while (dealerScore < 17){
+    let hitCount = 0
+    if (dealerScore < 17){
         dealerCardColumn.append(renderNewCard(cardObj))
         dealerScore += cardValue(cardObj)
-        dealerScoreDisplay.innerText = `${dealerScore}`
+        hitCount++
         console.log(dealerScore)
     }
-    winLose()
+    
+    if (hitCount > 0 && dealerScore < 17){
+        fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+        .then(r => r.json())
+        .then(card => {
+            dealerHit(card.cards[0])
+        })
+    }
+    if (dealerScore >= 17){
+        winLose()
+    }
 }
 
 startButton.addEventListener("click", () => {
