@@ -1,13 +1,35 @@
+
+
 body {
     font-family: 'Berkshire Swash', cursive;
 }
-th, td {
-    padding: 5px;
+
+.text-center{
+    position: relative;
+    padding: 1rem;
+}
+
+th{
+    padding: 3rem;
+    position: relative;
+}
+
+td {
+    padding-top: 3rem;
+    text-align: center;
+    position: relative;
+    scroll-padding-top: 100px;
     border-bottom: 1px solid #ddd;
-  }
+    margin-right: 3rem;
+    margin-left: 3rem;
+    margin-top: 3rem;
+}
 
 .game-page {
     display: flex;
+    flex-shrink: 20;
+    position: relative;
+    scroll-padding-top: 200px;
     justify-content: center;
     align-items: center;
     height: 100vh;

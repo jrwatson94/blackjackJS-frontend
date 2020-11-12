@@ -148,6 +148,11 @@ const renderStatsTable = hands => {
     gamePage.append(statsTable)
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 396679dbac133285a0e70ac5ee21448b33fc7a55
 //helper functions for fetch requests
 //GET existing user
 const findUser = (name) => {
@@ -303,6 +308,9 @@ const renderNewCard = card => {
     const img = document.createElement("img")
     img.className = "added-card"
     img.src = card.image
+    if (card.value === "ACE"){
+        card.dataset.ace = "ace-tracker"
+    }
     return img
 }
 
@@ -330,6 +338,14 @@ const cardValue = card => {
         return parseInt(card.value)
     }
 }
+
+// const aceStuff = score => {
+//     if (score > 21){
+//         return 1
+//     }else{
+//         return 11
+//     }
+// }
 
 //posts details of hand to the database 
 const postHand = () => {
@@ -468,12 +484,4 @@ const updateMoney = (money,id) => {
         },
         body: JSON.stringify(data)
     })
-    .then(()=>{
-        postHand()
-    })
 }
-
-
-
-
-
