@@ -334,13 +334,13 @@ const cardValue = card => {
     }
 }
 
-// const aceStuff = score => {
-//     if (score > 21){
-//         return 1
-//     }else{
-//         return 11
-//     }
-// }
+const aceStuff = score => {
+    if (score > 21){
+        return 1
+    }else{
+        return 11
+    }
+}
 
 //posts details of hand to the database 
 const postHand = () => {
