@@ -1,14 +1,35 @@
+
+
 body {
     font-family: 'Berkshire Swash', cursive;
 }
-th, td {
+
+.text-center{
     position: relative;
-    scroll-padding-top: 50px;
+    padding: 1rem;
+}
+
+th{
+    padding: 3rem;
+    position: relative;
+}
+
+td {
+    padding-top: 3rem;
+    text-align: center;
+    position: relative;
+    scroll-padding-top: 100px;
     border-bottom: 1px solid #ddd;
+    margin-right: 3rem;
+    margin-left: 3rem;
+    margin-top: 3rem;
 }
 
 .game-page {
     display: flex;
+    flex-shrink: 20;
+    position: relative;
+    scroll-padding-top: 200px;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -35,8 +56,8 @@ th, td {
   }
 
   .card-img {
-      max-height: 20rem;
-      max-width: 10rem;
+      max-height: 17rem;
+      max-width: 9rem;
       padding: 5px;
       /* margin: 10px; */
 
@@ -56,6 +77,13 @@ th, td {
     }
 }
 
+.btn {
+    box-shadow: 1px 2px gray;
+}
+.btn:hover{
+    box-shadow: 3px 6px;
+}
+
 
 #first-card{
     position: relative;
@@ -65,6 +93,7 @@ th, td {
     animation-duration: 0.3s;
 }
 #second-card{
+    border-radius: 8%;
     position: relative;
     bottom: 700px;
     animation-name: cardSlide;
@@ -75,7 +104,7 @@ th, td {
 #third-card{
     position: relative;
     bottom: 700px;
-    margin-left: -7rem;
+    margin-left: -4rem;
     animation-name: cardSlide;
     animation-fill-mode: forwards;
     animation-duration: 0.3s;
@@ -85,7 +114,7 @@ th, td {
 #fourth-card{
     position: relative;
     bottom: 700px;
-    margin-left: -7rem;
+    margin-left: -4rem;
     animation-name: cardSlide;
     animation-fill-mode: forwards;
     animation-duration: 0.3s;
@@ -113,10 +142,28 @@ th, td {
     margin-top: 2rem;
 }
 
+.money-button {
+    margin: 10px;
+    border-radius: 20%;
+}
+
 .lose-msg {
     color: red;
 }
 
 .win-msg {
     color: blanchedalmond;
+}
+
+.money-display {
+    margin-left: 3rem;
+}
+.money-button-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.money-display-col {
+    
 }
