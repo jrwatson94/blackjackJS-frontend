@@ -90,7 +90,6 @@ const renderStats= (id) => {
             if (hand.user_won == true) {
                 trueCount++
             }
-
         }
         const winPercentage = trueCount/hands.length
         renderWinPercentage(winPercentage)
@@ -130,7 +129,12 @@ const renderStatsTable = hands => {
         handNumber.innerText = hand.id
         userScore.innerText = hand.user_score
         dealerScore.innerText = hand.dealer_score
-        wl.innerText = hand.user_won
+        if (hand.user_won == true) {
+            wl.textContent = "won"
+        }else {
+            wl.textContent = "loss"
+        }
+        // wl.innerText = hand.user_won
 
         const tableRow = document.createElement("tr")
         tableRow.append(handNumber,userScore,dealerScore,wl)
@@ -140,6 +144,13 @@ const renderStatsTable = hands => {
     gamePage.append(statsTable)
 }
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> b78a07f56c52e1aa5e71bdc7797d71d2c72421c5
 //helper functions for fetch requests
 //GET existing user
 const findUser = (name) => {
@@ -439,6 +450,7 @@ startButton.addEventListener("click", () => {
     playerCardColumn.innerHTML=""
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
+<<<<<<< HEAD
 
 //MONEY FEATURE
 
@@ -467,3 +479,5 @@ const updateMoney = (money,id) => {
 
 
 
+=======
+>>>>>>> b78a07f56c52e1aa5e71bdc7797d71d2c72421c5
