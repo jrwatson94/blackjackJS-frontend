@@ -4,16 +4,13 @@ body {
     font-family: 'Berkshire Swash', cursive;
 }
 
-.text-center{
-    position: relative;
-    padding: 1rem;
-}
-
+/* .text-center{
+    padding: 3rem;
+} */
 th{
     padding: 3rem;
     position: relative;
 }
-
 td {
     padding-top: 3rem;
     text-align: center;
@@ -32,7 +29,7 @@ td {
     scroll-padding-top: 200px;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; */
   }
 
 

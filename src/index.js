@@ -324,6 +324,7 @@ const renderDealerScore = (card1,card2) => {
 }
 
 const cardValue = card => {
+    const score = playerScore || dealerScore
     if (card.value === "KING" || card.value === "QUEEN" || card.value === "JACK"){
         return 10
     } else if (card.value === "ACE"){
