@@ -228,6 +228,8 @@ td {
 
 .win-msg {
     color: blanchedalmond;
+    font-size: 40px;
+    text-shadow:2px 4px black;
 }
 
 .money-display {
