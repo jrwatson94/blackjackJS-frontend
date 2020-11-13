@@ -12,6 +12,13 @@ let userWinStatus = false
 //game board container
 const gameBoard = document.createElement("div")
 
+//consts
+const introMessage = document.createElement('h2')
+introMessage.className = "intro-msg"
+introMessage.innerText = "Place Your Bets"
+introMessage.append(document.createElement('hr'))
+
+
 //BOOTSTRAP GRID
 //rows
 const dealerRow = document.createElement('div')
@@ -24,15 +31,16 @@ const dealerScoreColumn = document.createElement("div")
 dealerScoreColumn.className = "col-3 align-self-center text-center"
 const dealerCardColumn = document.createElement("div")
 dealerCardColumn.className = "col-9 h-100"
-const dealerScoreDisplay = document.createElement("h4")
+
+
 
 const playerScoreColumn = document.createElement("div")
-playerScoreColumn.className = "col-3 align-self-center text-center"
+playerScoreColumn.className = "col-3 d-flex justify-content-center align-items-center"
 const playerCardColumn = document.createElement("div")
-playerCardColumn.className = "col-9 h-100"
+playerCardColumn.className = "col-9 h-100 d-flex justify-content-start"
 
 const moneyButtonsColumn = document.createElement('div')
-moneyButtonsColumn.className = "money-btn-col col-8 h-100 d-flex justify-content-end"
+moneyButtonsColumn.className = "money-btn-col col-8 h-100 d-flex justify-content-end align-items-center"
 const moneyDisplayColumn = document.createElement('div')
 moneyDisplayColumn.className = "money-display-col col-4 d-flex justify-content-end"
 
@@ -43,10 +51,10 @@ const nameTag = document.querySelector("#name-tag")
 
 //money
 let currentUserMoney = 0
-const moneyDisplay = document.createElement("h4")
+const moneyDisplay = document.createElement("h2")
 moneyDisplay.className = "money-display text-light"
 moneyDisplay.id = "user-money"
-const currentBetDisplay = document.createElement("h4")
+const currentBetDisplay = document.createElement("h2")
 currentBetDisplay.className = "money-display text-light"
 
 
@@ -256,6 +264,8 @@ const createGameBoard = () => {
     moneyButtonsColumn.append(betOne,betFive,betTen,betTwentyFive)
     moneyDisplayColumn.append(moneyDisplay,currentBetDisplay)
     bettingRow.append(moneyButtonsColumn,moneyDisplayColumn)
+
+    playerCardColumn.append(introMessage)
 
     //Append to DOM
     startButtonRow.append(startButton,hitButton,stayButton)
