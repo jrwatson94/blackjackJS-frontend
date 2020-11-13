@@ -10,6 +10,14 @@ table{
     box-shadow: 4px 8px;
     background-color: white;
 }
+.table-div {
+    display: flex;
+    flex-shrink: 20;
+    position: relative;
+    scroll-padding-top: 200px;
+    justify-content: center;
+    align-items: center;
+}
 .logo{
     max-height: 3rem;
 }

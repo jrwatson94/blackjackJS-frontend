@@ -127,6 +127,8 @@ const renderWinPercentage = (winPercentage) => {
 }
 
 const renderStatsTable = hands => {
+    const tableDiv = document.createElement('div')
+    tableDiv.className = "table-div"
     const statsTable = document.createElement("table")
     const statsTableHeader = document.createElement("thead")
     const statsHeaderRow = document.createElement("tr")
@@ -163,7 +165,8 @@ const renderStatsTable = hands => {
         statsTableBody.append(tableRow)
     })
     statsTable.append(statsTableHeader,statsTableBody)
-    gamePage.append(statsTable)
+    tableDiv.append(statsTable)
+    gamePage.append(tableDiv)
 }
 
 
