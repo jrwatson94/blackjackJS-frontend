@@ -3,10 +3,28 @@
 body {
     font-family: 'Berkshire Swash', cursive;
 }
+.logo{
+    max-height: 3rem;
+}
+.navbar {
+    box-shadow: 2px 4px;
+}
 
-/* .text-center{
-    padding: 3rem;
-} */
+.navbar-brand {
+    margin-left: 18rem;
+}
+.nav-link {
+    margin-left: 14rem;
+}
+
+#form {
+    margin: 1rem;
+    padding: 7rem;
+    border: 3px solid green;
+    border-radius: 6%;
+    box-shadow: 4px 8px;
+    background-color: white;
+}
 th{
     padding: 3rem;
     position: relative;
@@ -23,32 +41,44 @@ td {
 }
 
 .game-page {
+    /* margin-top: 2rem; */
     display: flex;
     flex-shrink: 20;
     position: relative;
     scroll-padding-top: 200px;
     justify-content: center;
     align-items: center;
-<<<<<<< HEAD
-=======
-    /* height: 100vh; */
->>>>>>> 4def35c8c17c60fa6db30a19e647d118c1abc440
+    background-color:black;
+    background-image: url(https://www.washingtonian.com/wp-content/uploads/2017/08/Casinos1.Thumbnail.jpg);
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+  }
+
+  .name-tag {
+      background-color: black;
   }
 
 
   .game-board {
-      height: 35rem;
+      height: 45rem;
       background-image: url('https://thumbnails.yayimages.com/2/995/2995f4e.jpg');
+      border: 3px solid white;
       border-radius: 2%;
       box-shadow: 5px 10px;
   }
 
   .dealer-row {
-      height: 40%;
+      height: 35%;
   }
 
   .player-row {
-      height: 40%;
+      height: 35%;
+  }
+
+  .betting-row{
+      height: 10%;
   }
 
   .start-button-row {
@@ -64,8 +94,13 @@ td {
   }
 
   .start-button {
-      width: 10rem;
-      margin-top: 2rem;
+      width: 7rem;
+      height: 4rem;
+      margin-top: 1rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      padding: auto;
+
   }
 
 @keyframes cardSlide {
@@ -123,8 +158,8 @@ td {
 
 .added-card {
     position: relative;
-    max-height: 20rem;
-    max-width: 10rem;
+    max-height: 17rem;
+    max-width: 9rem;
     padding: 5px;
     bottom: 700px;
     animation-name: cardSlide;
@@ -162,11 +197,7 @@ td {
     justify-content: center;
 
 }
-<<<<<<< HEAD
 .reset-data-button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: red;
 }
-=======
-
->>>>>>> 4def35c8c17c60fa6db30a19e647d118c1abc440

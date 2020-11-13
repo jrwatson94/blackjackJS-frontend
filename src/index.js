@@ -228,15 +228,15 @@ const createGameBoard = () => {
     bettingRow.className = "betting-row row justify-content-center"
 
     //play buttons
-    startButton.className = "start-button btn btn-primary h-50"
+    startButton.className = "start-button btn"
     startButton.id = "startButton"
     startButton.innerText = "Deal"
 
-    hitButton.className = "start-button btn btn-primary h-50"
+    hitButton.className = "start-button btn"
     hitButton.id = "hitButton"
     hitButton.innerText = "Hit"
 
-    stayButton.className = "start-button btn btn-primary h-50"
+    stayButton.className = "start-button btn"
     stayButton.id = "stayButton"
     stayButton.innerText = "Stay"
 
@@ -260,7 +260,7 @@ const createGameBoard = () => {
     //Append to DOM
     startButtonRow.append(startButton,hitButton,stayButton)
     
-    gameBoard.className = "game-board container border border-dark"
+    gameBoard.className = "game-board container"
     gameBoard.append(dealerRow,playerRow,bettingRow,startButtonRow)
 
     gamePage.append(gameBoard)
@@ -370,6 +370,7 @@ const postHand = () => {
 }
 
 const winLose = () => {
+    startButton.disabled = false
     if (playerScore <= dealerScore && dealerScore <= 21 || playerScore > 21){
         revealDealerCard()
         const loseMessage = document.createElement("h2")
@@ -470,6 +471,7 @@ startButton.addEventListener("click", () => {
     playerScoreColumn.innerHTML =""
     dealerCardColumn.innerHTML=""
     playerCardColumn.innerHTML=""
+    startButton.disabled = true
     fetchDeck('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
 })
 

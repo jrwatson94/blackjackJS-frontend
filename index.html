@@ -12,14 +12,26 @@
     <title>BlackJackJs</title>
 </head>
 <body>
-    <header class="text-center">
-        <h1>BlackJack</h1>
-        <h3 class="stats">My Stats</h3>
-    </header>
-    <h4 class="name-tag text-center"></h4>
-    <h3 id="name-tag" class="text-center"></h3>
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <img class="logo" src="src/assets/ace-of-spades.png" alt="">
+        <a class="navbar-brand" href="#">BlackJack.js</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarsExample02">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="stats nav-link" href="#">My Stats<span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
     <div class="game-page">
+        <h3 id="name-tag" class="text-center"></h3>
         <form id="form" class="text-center">
+            <h3>BlackJack JS</h3>
             <input type="text" id="username" name="username"><br><br>
             <input class = "btn border-dark" type="submit" value="Enter Your Name">
         </form>
