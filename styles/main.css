@@ -33,14 +33,22 @@ table{
 hr {
     background-color: white;
 }
+#landing-pg-hr {
+    background-color: black;
+    font-weight: 400;
+}
 
 #form {
     margin: 1rem;
     padding: 7rem;
-    border: 3px solid green;
+    border: 4px solid green;
     border-radius: 6%;
     box-shadow: 4px 8px;
-    background-color: white;
+    background-color: ivory;
+}
+
+#username{
+    margin-top: 3rem;
 }
 th{
     padding: 3rem;
